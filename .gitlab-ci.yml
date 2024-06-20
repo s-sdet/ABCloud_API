@@ -1,0 +1,24 @@
+# define stages
+stages:
+  - test
+
+test_is:
+  stage: test
+  tags:
+    - linux # your gitlabci runner tag
+  image:
+    name: python:3.9-alpine
+    entrypoint: [""]
+  variables:
+    client_id: ui
+    client_secret_key: $client_secret_key
+    k8s: https://k8s-api.dev-int.akbars.ru/
+    kc: https://keycloak.dev-int.akbars.ru/auth/
+    login: s-paas-test1
+    password: $password
+    realm_name: MOFFICE
+  before_script:
+    - apk update && apk upgrade
+    - pip install -r requirements.txt
+  script:
+    - pytest tests/test_get_is.py
